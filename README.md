@@ -7,6 +7,6 @@ an array sort algorithm implement by C++
 - Selection
 - Insertion
 
-# Run a demo
+# Run a Simple Demo
 
-Copy the ./src folder to ./demo, then use "g++ main.cc -o output" to run comple it and "./output" to run it.
+Copy the files in ./src to ./demo, then use "g++ main.cc -o output" to run comple it and "./output" to run it.
