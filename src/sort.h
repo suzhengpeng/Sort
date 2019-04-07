@@ -1,6 +1,8 @@
 /*
  * suzhengpeng<at>hotmail.com
  */
+#ifndef SORT_H
+#define SORT_H
 #include <iostream>
 #include <vector>
 
@@ -20,9 +22,16 @@ template <typename T> class Sort
 		Rank size(); // return the size of _elem[]
 		void display(); // print _elem[] by element-wise
 		void bublleSort(); // sort _elem[] by Bubble
+		void selectionSort(); // sort _elem[] by Selection
+		void insertionSort(); // sort _elem[] by Insertion
 	private:
-		bool bubble(Rank lo,Rank hi);
+		bool bubble(Rank key);
+		Rank select(Rank key);
+		void insert(Rank key);
 };
+#endif
+
+
 template <typename T> Sort<T>::Sort(Rank size)
 {
 	_elem = new T[size];
@@ -52,21 +61,69 @@ template <typename T> void Sort<T>::display()
 		cout << _elem[i] << endl;
 	}
 }
+/*Bubble Sort*/
 template <typename T> void Sort<T>::bublleSort()
 {
-	Rank lo = 0,hi = _elemSize;
-	while(!bubble(lo,hi--));
+	Rank key = 0;
+	while(!bubble(key));
 }
-template <typename T> bool Sort<T>::bubble(Rank lo,Rank hi)
+template <typename T> bool Sort<T>::bubble(Rank key)
 {
 	bool sorted = true;
-	while(++lo < hi)
+	while(++key < _elemSize)
 	{
-		if(_elem[lo - 1] > _elem[lo])
+		if(_elem[key - 1] > _elem[key])
 		{
 			sorted = false;
-			swap(_elem[lo - 1],_elem[lo]);
+			swap(_elem[key - 1],_elem[key]);
 		}
 	}
 	return sorted;
+}
+/*Selection Sort*/
+template <typename T> void Sort<T>::selectionSort()
+{
+	Rank key = 0;
+	for(Rank i = 0; i < _elemSize;i++)
+	{
+		Rank min = select(key++);
+		swap(_elem[min],_elem[i]);
+	}
+}
+template <typename T> Rank Sort<T>::select(Rank key)
+{
+	Rank select = key;
+	for (Rank i = key; i < _elemSize; i++)
+	{
+		if(_elem[i] < _elem[select])
+		{
+			select = i;
+		}
+	}
+	return select;
+}
+/*Insertion Sort*/
+template <typename T> void Sort<T>::insertionSort()
+{
+	T *elemBuf = new T[_elemSize];
+	Rank key = 1;
+	while (key < _elemSize)
+	{
+		insert(key);
+		key++;
+	}
+}
+template <typename T> void Sort<T>::insert(Rank key)
+{
+	Rank val = _elem[key];
+	Rank i = 0;
+	while(val > _elem[i])
+	{
+		i++;
+	}
+	for(Rank j = key ; j > i ;j -- )
+	{
+		//cout << "SWAP" << endl;
+		swap(_elem[j],_elem[j-1]);
+	}
 }
