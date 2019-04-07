@@ -1,2 +1,2 @@
 # Sort
-an array sort algorithm implement by c++
+an array sort algorithm implement by C++
