@@ -1,5 +1,6 @@
 # Sort
-an array sort algorithm implement by C++
+
+implementation of sorting algorithms in C++ [ developing ]
 
 # List of Algorithm
 
