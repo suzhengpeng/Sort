@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-typedef int Rank;
+typedef int Idx;
 
 using namespace std;
 
@@ -14,28 +14,30 @@ template <typename T> class Sort
 {
 	protected:
 		T * _elem; // store a arry for sort
-		Rank _elemSize; // size of _elem[]
-	public:
+		Idx _elemSize; // size of _elem[]
+	  public:
 		Sort(int size); // Constructor functions: create object by size
 		Sort(vector<T> arr); // Constructor functions: create object from a vector
 		~Sort(){delete[] _elem;}
-		Rank size(); // return the size of _elem[]
+		Idx size();		// return the size of _elem[]
 		void display(); // print _elem[] by element-wise
 		void bublleSort(); // sort _elem[] by Bubble
 		void selectionSort(); // sort _elem[] by Selection
 		void insertionSort(); // sort _elem[] by Insertion
+		void quickSort(); // sort _elem[] by Quick
 	private:
-		bool bubble(Rank key);
-		Rank select(Rank key);
-		void insert(Rank key);
+		bool bubble(Idx key);
+		Idx select(Idx key);
+		void insert(Idx key);
+		void quick(Idx left, Idx right);
 };
 #endif
 
 
-template <typename T> Sort<T>::Sort(Rank size)
+template <typename T> Sort<T>::Sort(Idx size)
 {
 	_elem = new T[size];
-	for(Rank i = 0;i < size;i ++)
+	for (Idx i = 0; i < size; i++)
 	{
 		_elem[i] = 0;
 	}
@@ -44,19 +46,19 @@ template <typename T> Sort<T>::Sort(Rank size)
 template <typename T> Sort<T>::Sort(vector<T> arr)
 {
 	_elem = new T[arr.size()];
-	for(Rank i = 0;i < arr.size();i ++)
+	for (Idx i = 0; i < arr.size(); i++)
 	{
 		_elem[i] = arr[i];
 	}
 	_elemSize = arr.size();
 }
-template <typename T> Rank Sort<T>::size()
+template <typename T> Idx Sort<T>::size()
 {
 	return _elemSize;
 }
 template <typename T> void Sort<T>::display()
 {
-	for(Rank i = 0;i < _elemSize;i ++)
+	for (Idx i = 0; i < _elemSize; i++)
 	{
 		cout << _elem[i] << endl;
 	}
@@ -64,10 +66,10 @@ template <typename T> void Sort<T>::display()
 /*Bubble Sort*/
 template <typename T> void Sort<T>::bublleSort()
 {
-	Rank key = 0;
+	Idx key = 0;
 	while(!bubble(key));
 }
-template <typename T> bool Sort<T>::bubble(Rank key)
+template <typename T> bool Sort<T>::bubble(Idx key)
 {
 	bool sorted = true;
 	while(++key < _elemSize)
@@ -83,17 +85,17 @@ template <typename T> bool Sort<T>::bubble(Rank key)
 /*Selection Sort*/
 template <typename T> void Sort<T>::selectionSort()
 {
-	Rank key = 0;
-	for(Rank i = 0; i < _elemSize;i++)
+	Idx key = 0;
+	for (Idx i = 0; i < _elemSize; i++)
 	{
-		Rank min = select(key++);
+		Idx min = select(key++);
 		swap(_elem[min],_elem[i]);
 	}
 }
-template <typename T> Rank Sort<T>::select(Rank key)
+template <typename T> Idx Sort<T>::select(Idx key)
 {
-	Rank select = key;
-	for (Rank i = key; i < _elemSize; i++)
+	Idx select = key;
+	for (Idx i = key; i < _elemSize; i++)
 	{
 		if(_elem[i] < _elem[select])
 		{
@@ -106,24 +108,54 @@ template <typename T> Rank Sort<T>::select(Rank key)
 template <typename T> void Sort<T>::insertionSort()
 {
 	T *elemBuf = new T[_elemSize];
-	Rank key = 1;
+	Idx key = 1;
 	while (key < _elemSize)
 	{
 		insert(key);
 		key++;
 	}
 }
-template <typename T> void Sort<T>::insert(Rank key)
+template <typename T> void Sort<T>::insert(Idx key)
 {
-	Rank val = _elem[key];
-	Rank i = 0;
+	T val = _elem[key];
+	Idx i = 0;
 	while(val > _elem[i])
 	{
 		i++;
 	}
-	for(Rank j = key ; j > i ;j -- )
+	for (Idx j = key; j > i; j--)
 	{
 		//cout << "SWAP" << endl;
 		swap(_elem[j],_elem[j-1]);
 	}
+}
+template <typename T> void Sort<T>::quickSort()
+{
+	Idx l = 0, r = _elemSize - 1;
+	quick(l,r);
+}
+template <typename T> void Sort<T>::quick(Idx left,Idx right)
+{
+	if(left > right)
+	{
+		return;
+	}
+	Idx i = left, j = right;
+	T base = _elem[i];
+	while(i!=j){
+		while(_elem[j] >= base && i < j){
+			j--;
+		}
+		while(_elem[i] <= base && i < j){
+			i++;
+		}
+		if(i < j)
+		{
+			swap(_elem[i],_elem[j]);
+		}
+	}
+	_elem[left] = _elem[i];
+	_elem[i] = base;
+	quick(left,i - 1);
+	quick(i + 1,right);
 }
