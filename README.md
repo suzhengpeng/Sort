@@ -4,9 +4,12 @@ implementation of sorting algorithms in C++ [ developing ]
 
 # List of Algorithm
 
-- Bubble
-- Selection
-- Insertion
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+- Quick Sort
+- Shell Sort
+- Counting Sort
 
 # Run a Simple Demo
 
